@@ -8,8 +8,9 @@ defineOptions({
 
 // Data ini akan kita pindah ke backend nanti
 const educationHistory = [
-{ id: 1, period: '2022 - Sekarang', institution: 'Universitas AMIKOM ', major: 'S1 - Informatika', icon: 'fas fa-graduation-cap', color: 'text-blue-400' },
-{ id: 2, period: '2019 - 2022', institution: 'SMK MUHAMMADIYAH 1 SLEMAN', major: 'MULTIMEDIA', icon: 'fas fa-school', color: 'text-green-400' }
+{ id: 1, period: '2022 - Sekarang', institution: 'Universitas AMIKOM', major: 'S1 - Informatika', icon: 'fas fa-graduation-cap', color: 'text-blue-400' },
+{ id: 2, period: '2019 - 2022', institution: 'SMK MUHAMMADIYAH 1 SLEMAN', major: 'MULTIMEDIA', icon: 'fas fa-school', color: 'text-green-400' },
+{ id: 3, period: '2016 - 2019', institution: 'SMP NEGERI 4 Ngaglik', major: 'Sekolah Menengah Pertama', icon: 'fas fa-user-graduate', color: 'text-purple-400' }
 ];
 </script>
 <template>
