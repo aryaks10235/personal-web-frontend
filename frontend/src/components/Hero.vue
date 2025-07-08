@@ -1,17 +1,18 @@
 <template>
 <section id="profil" class="container mx-auto px-6 py-20 flex flex-col md:flex-row items-center bg-gray-900 text-white">
 <div class="md:w-1/2 mb-10 md:mb-0">
-<h1 class="text-5xl font-bold text-white mb-4 animate-zoom-in custom-font" style="animation-delay: 200ms;">
-HALLO <span class="text-gray-300 animate-zoom-in-delayed">ARYA KUSUMA</span>
+<h1 class="text-5xl font-bold text-white mb-4 animate-slide-in-left custom-font"
+  style="animation-delay: 200ms;">
+HALLO <span class="text-gray-300">ARYA KUSUMA</span>
 </h1>
 <p class="text-xl text-gray-300 mb-8 animate-slide-in-left"
-style="animation-delay: 800ms;">
+style="animation-delay: 400ms;">
 Mahasiswa Informatika yang bersemangat dalam
 pengembangan web dan desain antarmuka.
 </p>
 <button @click="scrollToAbout" class="bg-gray-500 text-white font-bold py-3 px-6
 rounded-lg hover:bg-gray-700 transition-colors duration-300
-inline-block animate-slide-in-left" style="animation-delay: 1000ms;">
+inline-block animate-slide-in-left" style="animation-delay: 600ms;">
 Tentang Saya
 </button>
 </div>
@@ -152,58 +153,9 @@ const scrollToAbout = () => {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* ========== ZOOM IN ANIMATIONS ========== */
+/* ========== SLIDE ANIMATIONS (TETAP ADA) ========== */
 
-/* Zoom In Animation untuk "HALLO" */
-@keyframes zoom-in {
-  0% {
-    opacity: 0;
-    transform: scale(0.3) translateY(100px);
-    filter: blur(5px);
-  }
-  50% {
-    opacity: 0.8;
-    transform: scale(1.1) translateY(-10px);
-    filter: blur(0px);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-    filter: blur(0px);
-  }
-}
-
-.animate-zoom-in {
-  animation: zoom-in 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-  opacity: 0; /* Start invisible */
-}
-
-/* Zoom In Animation untuk "ARYA KUSUMA" dengan delay */
-@keyframes zoom-in-delayed {
-  0% {
-    opacity: 0;
-    transform: scale(0.5) rotateY(180deg);
-    filter: blur(3px);
-  }
-  60% {
-    opacity: 0.7;
-    transform: scale(1.05) rotateY(0deg);
-    filter: blur(0px);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) rotateY(0deg);
-    filter: blur(0px);
-  }
-}
-
-.animate-zoom-in-delayed {
-  animation: zoom-in-delayed 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-  animation-delay: 600ms;
-  opacity: 0;
-}
-
-/* Slide In Left Animation (existing) */
+/* Slide In Left Animation */
 @keyframes slide-in-left {
   0% {
     opacity: 0;
@@ -220,7 +172,7 @@ const scrollToAbout = () => {
   opacity: 0;
 }
 
-/* Slide In Right Animation (existing) */
+/* Slide In Right Animation */
 @keyframes slide-in-right {
   0% {
     opacity: 0;
@@ -342,16 +294,6 @@ const scrollToAbout = () => {
 
   .custom-font {
     font-size: 2.5rem;
-  }
-
-  /* Zoom animations lebih subtle di mobile */
-  .animate-zoom-in {
-    animation-duration: 0.8s;
-  }
-
-  .animate-zoom-in-delayed {
-    animation-duration: 0.6s;
-    animation-delay: 400ms;
   }
 }
 </style>
