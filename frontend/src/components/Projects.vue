@@ -25,24 +25,7 @@ const projects = [
     icon: 'fas fa-user-circle',
     color: 'text-violet-400'
   },
-  {
-    title: 'E-Learning Platform',
-    image: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    description: 'Platform pembelajaran online dengan fitur video streaming dan quiz.',
-    tech: ['React', 'Node.js', 'MongoDB'],
-    link: '#',
-    icon: 'fas fa-graduation-cap',
-    color: 'text-blue-400'
-  },
-  {
-    title: 'Mobile Banking App',
-    image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    description: 'Aplikasi mobile banking dengan fitur transfer dan pembayaran.',
-    tech: ['React Native', 'Firebase', 'Stripe'],
-    link: '#',
-    icon: 'fas fa-mobile-alt',
-    color: 'text-cyan-400'
-  }
+  
 ];
 </script>
 

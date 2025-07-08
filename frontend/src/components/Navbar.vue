@@ -1,5 +1,3 @@
-
-
 <template>
   <header class="bg-gray-900 shadow-md sticky top-0 z-50">
     <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
@@ -11,7 +9,7 @@
       <ul class="hidden md:flex space-x-6">
         <li v-for="item in menu" :key="item.id">
           <a :href="`#${item.id}`"
-             @click.prevent="smoothScrollTo(item.id)"
+             @click.prevent="scrollToSectionWithAnimation(item.id)"
              :class="['text-gray-300 hover:text-white px-2 py-1 rounded transition-colors', activeSection === item.id ? 'bg-blue-600 text-white' : '']">
             {{ item.label }}
           </a>
@@ -97,28 +95,41 @@ const scrollToTop = (event) => {
   }
 };
 
-// Smooth scroll to section with animation
-const smoothScrollTo = (sectionId, event) => {
-  const section = document.getElementById(sectionId)
-  if (section) {
-    // Calculate offset for fixed navbar
-    const navbarHeight = 80
-    const sectionTop = section.offsetTop - navbarHeight
+// Fungsi utama: scroll ke section dengan animasi fade-in (untuk semua section)
+const scrollToSectionWithAnimation = (sectionId) => {
+  // Log untuk debugging
+  console.log('🎯 Clicking:', sectionId)
 
-    // Smooth scroll with custom easing
+  // Cari section
+  const targetSection = document.getElementById(sectionId)
+
+  if (targetSection) {
+    console.log('✅ Found section:', sectionId)
+
+    // Set active section terlebih dahulu
+    activeSection.value = sectionId
+
+    // Hitung posisi
+    const offsetPosition = targetSection.offsetTop - 80
+    console.log('� Scrolling to:', offsetPosition)
+
+    // Scroll langsung
     window.scrollTo({
-      top: sectionTop,
+      top: offsetPosition,
       behavior: 'smooth'
     })
 
-    // Update active section
-    activeSection.value = sectionId
-
-    // Add click animation to the clicked link
-    const clickedLink = event ? event.target.closest('.nav-link') : null
-    if (clickedLink) {
-      animateClick(clickedLink)
+    // Animasi untuk section tertentu
+    if (['skills', 'pendidikan'].includes(sectionId)) {
+      targetSection.classList.remove('enter')
+      targetSection.classList.add('before-enter')
+      setTimeout(() => {
+        targetSection.classList.remove('before-enter')
+        targetSection.classList.add('enter')
+      }, 300)
     }
+  } else {
+    console.error('❌ Section not found:', sectionId)
   }
 }
 
@@ -129,7 +140,7 @@ const mobileScrollTo = (sectionId) => {
 
   // Wait for menu animation to complete
   setTimeout(() => {
-    smoothScrollTo(sectionId)
+    scrollToSectionWithAnimation(sectionId)
   }, 300)
 }
 
@@ -156,25 +167,34 @@ const animateClick = (element) => {
 // Track scroll position for active section highlighting
 const handleScroll = () => {
   const sections = ['profil', 'pendidikan', 'skills', 'projects', 'kontak']
-  const scrollPosition = window.scrollY + 100
+  const scrollPosition = window.scrollY + 150
+
+  let foundActiveSection = 'profil' // default
 
   sections.forEach(sectionId => {
     const section = document.getElementById(sectionId)
     if (section) {
-      const sectionTop = section.offsetTop
+      const sectionTop = section.offsetTop - 150
       const sectionHeight = section.offsetHeight
 
       if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-        activeSection.value = sectionId
+        foundActiveSection = sectionId
       }
     }
   })
+
+  // Only update if different
+  if (foundActiveSection !== activeSection.value) {
+    activeSection.value = foundActiveSection
+  }
 }
 
 // Setup scroll listener on mount
 onMounted(() => {
-  window.addEventListener('scroll', handleScroll)
-  handleScroll() // Initial check
+  // TEMPORARY: Disable scroll listener to test scroll functionality
+  // window.addEventListener('scroll', handleScroll)
+  // handleScroll() // Initial check
+  console.log('🚀 Navbar mounted - scroll listener DISABLED for testing')
 })
 
 // Cleanup on unmount
@@ -440,4 +460,4 @@ header.scrolled {
   transform: translateZ(0);
   backface-visibility: hidden;
 }
-</style>
+</style> -->
