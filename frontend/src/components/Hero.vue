@@ -10,11 +10,20 @@ style="animation-delay: 400ms;">
 Mahasiswa Informatika yang bersemangat dalam
 pengembangan web dan desain antarmuka.
 </p>
-<button @click="scrollToAbout" class="bg-gray-500 text-white font-bold py-3 px-6
-rounded-lg hover:bg-gray-700 transition-colors duration-300
-inline-block animate-slide-in-left" style="animation-delay: 600ms;">
-Tentang Saya
-</button>
+<div class="flex flex-col sm:flex-row gap-4 animate-slide-in-left" style="animation-delay: 600ms;">
+  <button @click="scrollToAbout" class="bg-gray-500 text-white font-bold py-3 px-6
+  rounded-lg hover:bg-gray-700 transition-all duration-300 transform hover:scale-105
+  inline-block shadow-lg hover:shadow-xl">
+    <i class="fas fa-user mr-2"></i>
+    Tentang Saya
+  </button>
+  <button @click="scrollToContact" class="bg-gradient-to-r from-blue-500 to-purple-600
+  text-white font-bold py-3 px-6 rounded-lg hover:from-blue-600 hover:to-purple-700
+  transition-all duration-300 transform hover:scale-105 inline-block shadow-lg hover:shadow-xl">
+    <i class="fas fa-envelope mr-2"></i>
+    Hubungi Saya
+  </button>
+</div>
 </div>
 <div class="md:w-1/2 flex justify-center animate-slide-in-right">
 <!-- Profile Image Container with Advanced Animations -->
@@ -136,6 +145,20 @@ const scrollToAbout = () => {
     aboutSection.scrollIntoView({
       behavior: 'smooth',
       block: 'start'
+    });
+  }
+};
+
+// Fungsi untuk scroll ke section kontak
+const scrollToContact = () => {
+  const contactSection = document.getElementById('kontak');
+  if (contactSection) {
+    const navbarHeight = 80;
+    const sectionTop = contactSection.offsetTop - navbarHeight;
+
+    window.scrollTo({
+      top: sectionTop,
+      behavior: 'smooth'
     });
   }
 };

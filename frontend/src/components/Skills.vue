@@ -24,7 +24,7 @@ const skills = [
 </script>
 
 <template>
-  <section id="keahlian" class="py-20 bg-gray-900 text-white">
+  <section id="skills" class="py-20 bg-gray-900 text-white">
     <div class="container mx-auto px-6">
       <SectionTitle title="Keahlian & Teknologi" />
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
