@@ -1,4 +1,5 @@
 <script setup>
+import { ref, onMounted } from 'vue';
 import SectionTitle from './SectionTitle.vue';
 
 // Definisikan nama komponen untuk menghindari warning
@@ -6,31 +7,20 @@ defineOptions({
   name: 'ProjectsSection'
 });
 
-const projects = [
-  {
-    title: 'Cuts Project Website',
-    image: 'https://images.unsplash.com/photo-1585747860715-2ba37e788b70?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    description: 'Website Barbershop online dengan fitur booking dan pembayaran.',
-    tech: ['Vue.js', 'Express.js', 'PostgreSQL'],
-    link: '#',
-    icon: 'fas fa-cut',
-    color: 'text-emerald-400'
-  },
-  {
-    title: 'Website Personal Branding',
-    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    description: 'Portfolio website untuk personal branding dan showcasing projects.',
-    tech: ['Vue.js', 'TailwindCSS', 'Vite'],
-    link: '#',
-    icon: 'fas fa-user-circle',
-    color: 'text-violet-400'
-  },
-  
-];
+const projects = ref([]);
+
+onMounted(async () => {
+  try {
+    const res = await fetch('http://localhost:3000/api/projects');
+    projects.value = await res.json();
+  } catch (e) {
+    console.error('Failed to fetch projects data', e);
+  }
+});
 </script>
 
 <template>
-  <section id="projects" class="py-20 bg-gray-800">
+  <section class="py-20 bg-gray-900">
     <div class="container mx-auto px-6">
       <SectionTitle title="Proyek Unggulan" />
       <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-8">

@@ -1,62 +1,89 @@
+
+
 <template>
-  <header class="bg-gray-900 shadow-md sticky top-0 z-50">
-    <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-      <!-- Logo: klik untuk scroll ke Hero -->
-      <div @click="scrollToTop" class="text-2xl font-bold text-white cursor-pointer select-none">
-        ARYA KUSUMA
+  <header class="bg-gray-900 shadow-lg sticky top-0 z-50">
+    <nav class="container mx-auto px-6 py-4">
+      <div class="flex justify-between items-center">
+        <!-- Logo -->
+        <div @click="scrollToTop" class="text-2xl font-bold text-white cursor-pointer hover:text-blue-300 transition-colors duration-300">
+          ARYA KUSUMA
+        </div>
+
+        <!-- Desktop Menu -->
+        <ul class="hidden md:flex space-x-6">
+          <li v-for="item in menu" :key="item.id">
+            <a
+              :href="`#${item.id}`"
+              @click.prevent="scrollToSection(item.id)"
+              :class="[
+                'px-3 py-2 rounded-md text-sm font-medium transition-all duration-300',
+                activeSection === item.id
+                  ? 'bg-blue-600 text-white shadow-lg'
+                  : 'text-gray-200 hover:text-white hover:bg-gray-500'
+              ]"
+            >
+              {{ item.label }}
+            </a>
+          </li>
+        </ul>
+
+        <!-- Mobile Menu Button -->
+        <button
+          @click="toggleMobileMenu"
+          class="md:hidden text-white hover:text-blue-300 focus:outline-none transition-colors duration-300"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path v-if="!isMobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
       </div>
-      <!-- Desktop Menu -->
-      <ul class="hidden md:flex space-x-6">
-        <li v-for="item in menu" :key="item.id">
-          <a :href="`#${item.id}`"
-             @click.prevent="scrollToSectionWithAnimation(item.id)"
-             :class="['text-gray-300 hover:text-white px-2 py-1 rounded transition-colors', activeSection === item.id ? 'bg-blue-600 text-white' : '']">
-            {{ item.label }}
-          </a>
-        </li>
-      </ul>
-      <!-- Mobile Menu Button -->
-      <button @click="toggleMobileMenu" class="md:hidden text-gray-300 hover:text-white focus:outline-none">
-        <span v-if="!isMobileMenuOpen">☰</span>
-        <span v-else>✕</span>
-      </button>
+
+      <!-- Mobile Menu -->
+      <div
+        v-if="isMobileMenuOpen"
+        class="md:hidden mt-4 pb-4 border-t border-gray-500"
+      >
+        <ul class="space-y-2 pt-4">
+          <li v-for="item in menu" :key="item.id">
+            <a
+              :href="`#${item.id}`"
+              @click.prevent="mobileScrollTo(item.id)"
+              :class="[
+                'block px-3 py-2 rounded-md text-base font-medium transition-all duration-300',
+                activeSection === item.id
+                  ? 'bg-blue-600 text-white'
+                  : 'text-gray-200 hover:text-white hover:bg-gray-500'
+              ]"
+            >
+              {{ item.label }}
+            </a>
+          </li>
+        </ul>
+      </div>
     </nav>
-    <!-- Mobile Menu -->
-    <div v-if="isMobileMenuOpen" class="md:hidden bg-gray-800 border-t border-gray-700">
-      <ul class="px-6 py-4 space-y-2">
-        <li v-for="item in menu" :key="item.id">
-          <a :href="`#${item.id}`"
-             @click.prevent="mobileScrollTo(item.id)"
-             :class="['block py-2 px-3 rounded text-gray-300 hover:text-white hover:bg-blue-700', activeSection === item.id ? 'bg-blue-600 text-white' : '']">
-            {{ item.label }}
-          </a>
-        </li>
-      </ul>
-    </div>
   </header>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 
-// Definisikan nama komponen untuk menghindari warning
 defineOptions({
   name: 'NavbarComponent'
 })
 
-// Daftar menu dan id section
+// Menu items
 const menu = [
   { id: 'profil', label: 'Profil' },
+  { id: 'tentang-saya', label: 'Tentang' },
   { id: 'pendidikan', label: 'Pendidikan' },
   { id: 'skills', label: 'Skills' },
   { id: 'projects', label: 'Projects' },
-  { id: 'kontak', label: 'Kontak' },
+  { id: 'kontak', label: 'Kontak' }
 ]
 
-// Mobile menu state
+// State
 const isMobileMenuOpen = ref(false)
-
-// Active section tracking
 const activeSection = ref('profil')
 
 // Toggle mobile menu
@@ -69,395 +96,143 @@ const closeMobileMenu = () => {
   isMobileMenuOpen.value = false
 }
 
-// Scroll to top (Hero/Profil section)
-const scrollToTop = (event) => {
-  const profilSection = document.getElementById('profil');
-  if (profilSection) {
-    // Calculate offset for fixed navbar
-    const navbarHeight = 80;
-    const sectionTop = profilSection.offsetTop - navbarHeight;
+// Debug function to check if all sections exist
+const checkSections = () => {
+  console.log('🔍 Checking all sections...')
+  menu.forEach(item => {
+    const element = document.getElementById(item.id)
+    if (element) {
+      console.log(`✅ Section "${item.id}" ditemukan at position:`, element.offsetTop)
+    } else {
+      console.warn(`❌ Section "${item.id}" tidak ditemukan`)
+    }
+  })
+}
+
+// Scroll to top function
+const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  })
+  activeSection.value = 'profil'
+  closeMobileMenu()
+}
+
+// Scroll to section function
+const scrollToSection = (sectionId) => {
+  console.log(`🎯 Attempting to scroll to: ${sectionId}`)
+  const element = document.getElementById(sectionId)
+  if (element) {
+    console.log(`✅ Element found for: ${sectionId}`)
+    const navbarHeight = 80
+    const elementPosition = element.offsetTop - navbarHeight
+
+    console.log(`📍 Scrolling to position: ${elementPosition}`)
 
     window.scrollTo({
-      top: sectionTop,
-      behavior: 'smooth'
-    });
-  } else {
-    // Fallback to top of page
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  }
-
-  // Add click animation
-  if (event && event.target) {
-    animateClick(event.target);
-  }
-};
-
-// Fungsi utama: scroll ke section dengan animasi fade-in (untuk semua section)
-const scrollToSectionWithAnimation = (sectionId) => {
-  // Log untuk debugging
-  console.log('🎯 Clicking:', sectionId)
-
-  // Cari section
-  const targetSection = document.getElementById(sectionId)
-
-  if (targetSection) {
-    console.log('✅ Found section:', sectionId)
-
-    // Set active section terlebih dahulu
-    activeSection.value = sectionId
-
-    // Hitung posisi
-    const offsetPosition = targetSection.offsetTop - 80
-    console.log('� Scrolling to:', offsetPosition)
-
-    // Scroll langsung
-    window.scrollTo({
-      top: offsetPosition,
+      top: elementPosition,
       behavior: 'smooth'
     })
 
-    // Animasi untuk section tertentu
-    if (['skills', 'pendidikan'].includes(sectionId)) {
-      targetSection.classList.remove('enter')
-      targetSection.classList.add('before-enter')
-      setTimeout(() => {
-        targetSection.classList.remove('before-enter')
-        targetSection.classList.add('enter')
-      }, 300)
-    }
+    activeSection.value = sectionId
+    closeMobileMenu()
   } else {
-    console.error('❌ Section not found:', sectionId)
+    console.warn(`❌ Section dengan ID "${sectionId}" tidak ditemukan`)
   }
 }
 
-// Mobile scroll with menu close
+// Mobile scroll function
 const mobileScrollTo = (sectionId) => {
-  // Close mobile menu first
   closeMobileMenu()
-
-  // Wait for menu animation to complete
   setTimeout(() => {
-    scrollToSectionWithAnimation(sectionId)
+    scrollToSection(sectionId)
   }, 300)
 }
 
-// Click animation effect
-const animateClick = (element) => {
-  // Add pulse effect
-  element.classList.add('animate-pulse-click')
-
-  // Remove class after animation
-  setTimeout(() => {
-    element.classList.remove('animate-pulse-click')
-  }, 600)
-
-  // Icon bounce animation
-  const icon = element.querySelector('i')
-  if (icon) {
-    icon.classList.add('animate-bounce-icon')
-    setTimeout(() => {
-      icon.classList.remove('animate-bounce-icon')
-    }, 800)
-  }
-}
-
-// Track scroll position for active section highlighting
+// Track scroll position for active section
 const handleScroll = () => {
-  const sections = ['profil', 'pendidikan', 'skills', 'projects', 'kontak']
-  const scrollPosition = window.scrollY + 150
+  const sections = menu.map(item => item.id)
+  const scrollPosition = window.scrollY + 150 // Increased offset for better detection
 
-  let foundActiveSection = 'profil' // default
-
-  sections.forEach(sectionId => {
-    const section = document.getElementById(sectionId)
-    if (section) {
-      const sectionTop = section.offsetTop - 150
-      const sectionHeight = section.offsetHeight
-
-      if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-        foundActiveSection = sectionId
-      }
+  for (let i = sections.length - 1; i >= 0; i--) {
+    const section = document.getElementById(sections[i])
+    if (section && scrollPosition >= section.offsetTop - 100) {
+      activeSection.value = sections[i]
+      break
     }
-  })
-
-  // Only update if different
-  if (foundActiveSection !== activeSection.value) {
-    activeSection.value = foundActiveSection
   }
 }
 
-// Setup scroll listener on mount
+// Lifecycle hooks
 onMounted(() => {
-  // TEMPORARY: Disable scroll listener to test scroll functionality
-  // window.addEventListener('scroll', handleScroll)
-  // handleScroll() // Initial check
-  console.log('🚀 Navbar mounted - scroll listener DISABLED for testing')
+  window.addEventListener('scroll', handleScroll)
+  handleScroll()
+
+  // Check if all sections exist after component is mounted
+  setTimeout(() => {
+    console.log('🚀 Navbar mounted, checking sections...')
+    checkSections()
+  }, 2000) // Increased delay to ensure all components are loaded
 })
 
-// Cleanup on unmount
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
 })
 </script>
 
 <style scoped>
-header {
-  transition: box-shadow 0.2s;
-}
-nav ul li a {
-  font-weight: 500;
-  font-size: 1rem;
-  text-decoration: none;
-}
-nav ul li a:hover,
-nav ul li a:focus {
-  background: #2563eb;
-  color: #fff;
-}
-.bg-blue-600 {
-  background: #2563eb;
-}
-.hover\:bg-blue-700:hover {
-  background: #1d4ed8;
-}
-.border-t {
-  border-top: 1px solid #374151;
-}
-.rounded {
-  border-radius: 0.375rem;
-}
-.transition-colors {
-  transition: background 0.2s, color 0.2s;
+/* Navigation styles */
+nav {
+  backdrop-filter: blur(10px);
 }
 
-</style>
-
-<style scoped>
-/* ========== NAVBAR ANIMATIONS ========== */
-
-/* Fade in animation for navbar */
-@keyframes fade-in {
-  0% {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Logo hover effect */
+div:first-child:hover {
+  transform: scale(1.02);
 }
 
-.animate-fade-in {
-  animation: fade-in 0.8s ease-out;
-}
-
-/* ========== NAVIGATION LINK ANIMATIONS ========== */
-
-/* Underline animation on hover */
-.nav-link::before {
-  content: '';
-  position: absolute;
-  bottom: -5px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-  transition: width 0.3s ease-in-out;
-}
-
-.nav-link:hover::before {
-  width: 100%;
-}
-
-/* Active section highlighting */
-.nav-link.active {
-  color: #3b82f6 !important;
-}
-
-.nav-link.active::before {
-  width: 100%;
-}
-
-/* Icon animations */
-.animate-icon {
-  transition: all 0.3s ease;
-}
-
-.nav-link:hover .animate-icon {
-  transform: scale(1.2) rotate(5deg);
-  filter: brightness(1.2);
-}
-
-/* ========== CLICK ANIMATIONS ========== */
-
-/* Pulse effect on click */
-@keyframes pulse-click {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
-  }
-  50% {
-    transform: scale(1.05);
-    box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
-  }
-}
-
-.animate-pulse-click {
-  animation: pulse-click 0.6s ease-out;
-}
-
-/* Icon bounce on click */
-@keyframes bounce-icon {
-  0%, 20%, 50%, 80%, 100% {
-    transform: translateY(0) scale(1);
-  }
-  40% {
-    transform: translateY(-8px) scale(1.3);
-  }
-  60% {
-    transform: translateY(-4px) scale(1.1);
-  }
-}
-
-.animate-bounce-icon {
-  animation: bounce-icon 0.8s ease-out;
-}
-
-/* ========== MOBILE MENU ANIMATIONS ========== */
-
-/* Mobile menu slide down */
-.mobile-menu {
+/* Mobile menu animation */
+div:last-child {
   animation: slideDown 0.3s ease-out;
 }
 
 @keyframes slideDown {
-  0% {
+  from {
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(-10px);
   }
-  100% {
+  to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-/* Mobile nav link hover effect */
-.mobile-nav-link {
-  position: relative;
-  overflow: hidden;
+/* Active link styling */
+.bg-blue-600 {
+  background-color: #2563eb;
 }
 
-.mobile-nav-link::before {
-  content: '';
-  position: absolute;
-  left: -100%;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
-  transition: left 0.5s ease;
+/* Hover effects */
+.hover\:bg-gray-500:hover {
+  background-color: #6b7280;
 }
 
-.mobile-nav-link:hover::before {
-  left: 100%;
+.hover\:text-blue-300:hover {
+  color: #93c5fd;
 }
 
-/* ========== RESPONSIVE DESIGN ========== */
-
-/* Mobile menu button animation */
-.fa-bars, .fa-times {
-  transition: transform 0.3s ease;
-}
-
-.fa-times {
-  transform: rotate(180deg);
-}
-
-/* Logo hover effect */
-header div:first-child:hover {
-  text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-  transform: scale(1.05);
-}
-
-/* ========== SCROLL BEHAVIOR ========== */
-
-/* Smooth navbar shadow on scroll */
-header {
-  transition: all 0.3s ease;
-}
-
-header.scrolled {
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-}
-
-/* ========== ENHANCED EFFECTS ========== */
-
-/* Gradient text effect for active links */
-.nav-link.active {
-  background: linear-gradient(45deg, #3b82f6, #8b5cf6);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* Glassmorphism effect for mobile menu */
-.mobile-menu {
-  backdrop-filter: blur(10px);
-  background: rgba(31, 41, 55, 0.95);
-}
-
-/* Icon glow effect on hover */
-.nav-link:hover .animate-icon {
-  filter: drop-shadow(0 0 8px currentColor);
-}
-
-/* Loading animation for smooth scroll */
-@keyframes loading-dot {
-  0%, 20% {
-    color: rgba(59, 130, 246, 0.2);
-    transform: scale(1);
-  }
-  50% {
-    color: rgba(59, 130, 246, 1);
-    transform: scale(1.2);
-  }
-  80%, 100% {
-    color: rgba(59, 130, 246, 0.2);
-    transform: scale(1);
-  }
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .nav-link::before {
-    display: none;
-  }
-
-  .mobile-nav-link:active {
-    transform: scale(0.95);
-    background-color: rgba(59, 130, 246, 0.2);
-  }
-}
-
-/* Accessibility improvements */
-.nav-link:focus,
-.mobile-nav-link:focus {
+/* Focus styles for accessibility */
+a:focus,
+button:focus {
   outline: 2px solid #3b82f6;
   outline-offset: 2px;
-  border-radius: 4px;
 }
 
-/* Performance optimization */
+/* Smooth transitions */
 * {
-  transform: translateZ(0);
-  backface-visibility: hidden;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
 }
-</style> -->
+</style>

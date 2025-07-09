@@ -1,4 +1,5 @@
 <script setup>
+import { ref, onMounted } from 'vue';
 import SectionTitle from './SectionTitle.vue';
 
 // Definisikan nama komponen untuk menghindari warning
@@ -7,24 +8,20 @@ defineOptions({
 });
 
 // Data keahlian dengan teknologi yang diperluas (tanpa level)
-const skills = [
-  { name: 'Vue.js', icon: 'fab fa-vuejs', color: 'text-green-400', glowColor: 'shadow-green-400/50' },
-  { name: 'JavaScript', icon: 'fab fa-js-square', color: 'text-yellow-400', glowColor: 'shadow-yellow-400/50' },
-  { name: 'HTML5', icon: 'fab fa-html5', color: 'text-orange-400', glowColor: 'shadow-orange-400/50' },
-  { name: 'CSS3', icon: 'fab fa-css3-alt', color: 'text-blue-400', glowColor: 'shadow-blue-400/50' },
-  { name: 'React', icon: 'fab fa-react', color: 'text-cyan-400', glowColor: 'shadow-cyan-400/50' },
-  { name: 'Node.js', icon: 'fab fa-node-js', color: 'text-green-500', glowColor: 'shadow-green-500/50' },
-  { name: 'PHP', icon: 'fab fa-php', color: 'text-purple-400', glowColor: 'shadow-purple-400/50' },
-  { name: 'MySQL', icon: 'fas fa-database', color: 'text-blue-500', glowColor: 'shadow-blue-500/50' },
-  { name: 'Git', icon: 'fab fa-git-alt', color: 'text-red-400', glowColor: 'shadow-red-400/50' },
-  { name: 'Figma', icon: 'fab fa-figma', color: 'text-pink-400', glowColor: 'shadow-pink-400/50' },
-  { name: 'TailwindCSS', icon: 'fas fa-wind', color: 'text-teal-400', glowColor: 'shadow-teal-400/50' },
-  { name: 'Bootstrap', icon: 'fab fa-bootstrap', color: 'text-purple-500', glowColor: 'shadow-purple-500/50' }
-];
+const skills = ref([]);
+
+onMounted(async () => {
+  try {
+    const res = await fetch('http://localhost:3000/api/skills');
+    skills.value = await res.json();
+  } catch (e) {
+    console.error('Failed to fetch skills data', e);
+  }
+});
 </script>
 
 <template>
-  <section id="skills" class="py-20 bg-gray-900 text-white">
+  <section class="py-20 bg-gray-900 text-white">
     <div class="container mx-auto px-6">
       <SectionTitle title="Keahlian & Teknologi" />
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

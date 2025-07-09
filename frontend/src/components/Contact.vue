@@ -84,10 +84,38 @@ const submitForm = async () => {
   message.value = { text: '', type: '' }
 
   try {
-    // Simulasi loading
-    await new Promise(resolve => setTimeout(resolve, 1500))
+    // Kirim data ke Formspree
+    const response = await fetch('https://formspree.io/f/mgvyjkdj', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: form.nama,
+        email: form.email,
+        message: form.pesan,
+        _subject: `📧 Pesan dari ${form.nama} - Portfolio Website`,
+      })
+    })
 
-    // Create email content
+    if (response.ok) {
+      message.value = {
+        text: '✅ Pesan berhasil dikirim! Terima kasih, saya akan membalas segera.',
+        type: 'success'
+      }
+
+      // Reset form setelah berhasil
+      form.nama = ''
+      form.email = ''
+      form.pesan = ''
+    } else {
+      throw new Error('Gagal mengirim pesan')
+    }
+
+  } catch (error) {
+    console.error('Error:', error)
+
+    // Fallback ke mailto jika Formspree gagal
     const subject = encodeURIComponent(`📧 Pesan dari ${form.nama} - Portfolio Website`)
     const emailContent = `Halo Arya,
 
@@ -118,26 +146,13 @@ Salam hormat,
 ${form.nama}`
 
     const body = encodeURIComponent(emailContent)
-
-    // Buka email client dengan data yang sudah terisi
     const mailtoLink = `mailto:aryakusuma10235@students.amikom.ac.id?subject=${subject}&body=${body}`
+
     window.open(mailtoLink, '_blank')
 
     message.value = {
-      text: '✅ Email client berhasil dibuka! Silakan klik "Send" untuk mengirim pesan.',
+      text: '⚠️ Menggunakan email client sebagai backup. Silakan klik "Send" untuk mengirim pesan.',
       type: 'success'
-    }
-
-    // Reset form setelah berhasil
-    form.nama = ''
-    form.email = ''
-    form.pesan = ''
-
-  } catch (error) {
-    console.error('Error:', error)
-    message.value = {
-      text: '❌ Terjadi kesalahan. Silakan coba lagi.',
-      type: 'error'
     }
   } finally {
     isSubmitting.value = false
@@ -150,7 +165,7 @@ ${form.nama}`
 </script>
 
 <template>
-  <section id="kontak" class="py-20 bg-gray-800 text-white">
+  <section class="py-20 bg-gray-900 text-white">
     <div class="container mx-auto px-6">
       <div class="max-w-6xl mx-auto">
         <!-- Header Section -->
@@ -181,16 +196,16 @@ ${form.nama}`
                       <!-- Row Nama -->
                       <tr class="border-b border-gray-600 hover:bg-gray-750 transition-colors duration-200">
                         <td class="px-6 py-6 align-top w-1/3">
-                          <label for="nama" class="block text-sm font-medium text-gray-300">
-                            <i class="fas fa-user mr-2 text-blue-400"></i>
-                            Nama Lengkap *
+                          <label for="nama" class="block text-lg font-medium text-gray-300">
+                            <i class="fas fa-user mr-3 text-blue-400 text-base"></i>
+                            Nama Lengkap
                           </label>
-                          <p class="text-xs text-gray-500 mt-1">Masukkan nama lengkap Anda</p>
                         </td>
                         <td class="px-6 py-6">
                           <input
                             type="text"
                             id="nama"
+                            name="name"
                             v-model="form.nama"
                             :class="[
                               'w-full px-4 py-3 bg-gray-600 border rounded-lg text-white placeholder-gray-400',
@@ -210,16 +225,16 @@ ${form.nama}`
                       <!-- Row Email -->
                       <tr class="border-b border-gray-600 hover:bg-gray-750 transition-colors duration-200">
                         <td class="px-6 py-6 align-top w-1/3">
-                          <label for="email" class="block text-sm font-medium text-gray-300">
-                            <i class="fas fa-envelope mr-2 text-green-400"></i>
-                            Email Address *
+                          <label for="email" class="block text-lg font-medium text-gray-300">
+                            <i class="fas fa-envelope mr-3 text-green-400 text-base"></i>
+                            Email Address
                           </label>
-                          <p class="text-xs text-gray-500 mt-1">Email yang valid untuk balasan</p>
                         </td>
                         <td class="px-6 py-6">
                           <input
                             type="email"
                             id="email"
+                            name="email"
                             v-model="form.email"
                             :class="[
                               'w-full px-4 py-3 bg-gray-600 border rounded-lg text-white placeholder-gray-400',
@@ -235,15 +250,15 @@ ${form.nama}`
                       <!-- Row Pesan -->
                       <tr class="hover:bg-gray-750 transition-colors duration-200">
                         <td class="px-6 py-6 align-top w-1/3">
-                          <label for="pesan" class="block text-sm font-medium text-gray-300">
-                            <i class="fas fa-comment-dots mr-2 text-yellow-400"></i>
-                            Pesan *
+                          <label for="pesan" class="block text-lg font-medium text-gray-300">
+                            <i class="fas fa-comment-dots mr-3 text-yellow-400 text-base"></i>
+                            Pesan
                           </label>
-                          <p class="text-xs text-gray-500 mt-1">Tulis pesan atau pertanyaan Anda</p>
                         </td>
                         <td class="px-6 py-6">
                           <textarea
                             id="pesan"
+                            name="message"
                             v-model="form.pesan"
                             rows="6"
                             :class="[
@@ -318,7 +333,7 @@ ${form.nama}`
                 <i class="fab fa-linkedin text-3xl"></i>
               </div>
               <span class="text-sm font-medium">LinkedIn</span>
-              <span class="text-xs text-gray-500 group-hover:text-blue-300">Professional Network</span>
+              <span class="text-xs text-gray-500 group-hover:text-blue-300"></span>
             </a>
 
             <!-- Instagram -->

@@ -1,31 +1,22 @@
 <template>
-<section id="profil" class="container mx-auto px-6 py-20 flex flex-col md:flex-row items-center bg-gray-900 text-white">
-<div class="md:w-1/2 mb-10 md:mb-0">
+<section id="profil" class="max-w-5xl mx-auto px-4 py-20 flex flex-col md:flex-row items-center justify-center bg-gray-900 text-white md:gap-0">
+<div class="md:w-1/2 mb-2 md:mb-0 md:pr-0">
+<p class="text-lg text-gray-300 mb-2 animate-slide-in-left" style="animation-delay: 100ms;">
+Hallo Saya
+</p>
 <h1 class="text-5xl font-bold text-white mb-4 animate-slide-in-left custom-font"
   style="animation-delay: 200ms;">
-HALLO <span class="text-gray-300">ARYA KUSUMA</span>
+<span class="text-gray-300">ARYA KUSUMA</span>
 </h1>
-<p class="text-xl text-gray-300 mb-8 animate-slide-in-left"
+<div class="mb-4 animate-slide-in-left" style="animation-delay: 600ms;">
+  <TypeWriter :texts="['Frontend Developer', 'UI/UX Designer']" :speed="120" :delay="1500" />
+</div>
+<p class="text-xl text-gray-300 mb-4 animate-slide-in-left"
 style="animation-delay: 400ms;">
-Mahasiswa Informatika yang bersemangat dalam
-pengembangan web dan desain antarmuka.
+Selamat Datang di Website Personal saya.
 </p>
-<div class="flex flex-col sm:flex-row gap-4 animate-slide-in-left" style="animation-delay: 600ms;">
-  <button @click="scrollToAbout" class="bg-gray-500 text-white font-bold py-3 px-6
-  rounded-lg hover:bg-gray-700 transition-all duration-300 transform hover:scale-105
-  inline-block shadow-lg hover:shadow-xl">
-    <i class="fas fa-user mr-2"></i>
-    Tentang Saya
-  </button>
-  <button @click="scrollToContact" class="bg-gradient-to-r from-blue-500 to-purple-600
-  text-white font-bold py-3 px-6 rounded-lg hover:from-blue-600 hover:to-purple-700
-  transition-all duration-300 transform hover:scale-105 inline-block shadow-lg hover:shadow-xl">
-    <i class="fas fa-envelope mr-2"></i>
-    Hubungi Saya
-  </button>
 </div>
-</div>
-<div class="md:w-1/2 flex justify-center animate-slide-in-right">
+<div class="md:w-1/2 flex justify-center animate-slide-in-right md:pl-0">
 <!-- Profile Image Container with Advanced Animations -->
 <div class="group relative profile-container">
   <!-- Rotating Border Ring -->
@@ -49,7 +40,7 @@ pengembangan web dan desain antarmuka.
 
   <!-- Main Profile Image -->
   <img src="https://github.com/aryaks10235.png" alt="Foto Profil Arya Kusuma"
-       class="relative z-10 w-80 h-80 rounded-full object-cover shadow-2xl cursor-pointer
+       class="relative z-10 w-100 h-100 rounded-full object-cover shadow-2xl cursor-pointer
               transition-all duration-500 group-hover:scale-110 group-hover:rotate-3
               filter group-hover:brightness-110 group-hover:contrast-110
               border-4 border-transparent group-hover:border-white/20"
@@ -64,7 +55,7 @@ pengembangan web dan desain antarmuka.
 </section>
 
 <!-- Section Tentang Saya - Muncul di bawah hero -->
-<section id="tentang-saya" class="py-20 bg-gray-800 text-white">
+<section id="tentang-saya" class="py-20 bg-gray-900 text-white">
   <div class="container mx-auto px-6">
     <div class="max-w-4xl mx-auto">
       <!-- Header Section -->
@@ -133,35 +124,12 @@ pengembangan web dan desain antarmuka.
 </template>
 
 <script setup>
+import TypeWriter from './TypeWriter.vue'
+
 // Definisikan nama komponen untuk menghindari warning
 defineOptions({
   name: 'HeroSection'
 });
-
-// Fungsi untuk scroll ke section tentang saya
-const scrollToAbout = () => {
-  const aboutSection = document.getElementById('tentang-saya');
-  if (aboutSection) {
-    aboutSection.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
-    });
-  }
-};
-
-// Fungsi untuk scroll ke section kontak
-const scrollToContact = () => {
-  const contactSection = document.getElementById('kontak');
-  if (contactSection) {
-    const navbarHeight = 80;
-    const sectionTop = contactSection.offsetTop - navbarHeight;
-
-    window.scrollTo({
-      top: sectionTop,
-      behavior: 'smooth'
-    });
-  }
-};
 </script>
 
 <style scoped>
@@ -214,8 +182,8 @@ const scrollToContact = () => {
 
 /* Profile Container Sizing */
 .profile-container {
-  width: 320px;
-  height: 320px;
+  width: 400px;
+  height: 400px;
 }
 
 .profile-ring {
@@ -251,33 +219,33 @@ const scrollToContact = () => {
 
 /* Orbital Animations for Floating Particles */
 @keyframes orbit-1 {
-  0% { transform: rotate(0deg) translateX(160px) rotate(0deg); }
-  100% { transform: rotate(360deg) translateX(160px) rotate(-360deg); }
+  0% { transform: rotate(0deg) translateX(200px) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(200px) rotate(-360deg); }
 }
 
 @keyframes orbit-2 {
-  0% { transform: rotate(60deg) translateX(150px) rotate(-60deg); }
-  100% { transform: rotate(420deg) translateX(150px) rotate(-420deg); }
+  0% { transform: rotate(60deg) translateX(190px) rotate(-60deg); }
+  100% { transform: rotate(420deg) translateX(190px) rotate(-420deg); }
 }
 
 @keyframes orbit-3 {
-  0% { transform: rotate(120deg) translateX(170px) rotate(-120deg); }
-  100% { transform: rotate(480deg) translateX(170px) rotate(-480deg); }
+  0% { transform: rotate(120deg) translateX(210px) rotate(-120deg); }
+  100% { transform: rotate(480deg) translateX(210px) rotate(-480deg); }
 }
 
 @keyframes orbit-4 {
-  0% { transform: rotate(180deg) translateX(155px) rotate(-180deg); }
-  100% { transform: rotate(540deg) translateX(155px) rotate(-540deg); }
+  0% { transform: rotate(180deg) translateX(195px) rotate(-180deg); }
+  100% { transform: rotate(540deg) translateX(195px) rotate(-540deg); }
 }
 
 @keyframes orbit-5 {
-  0% { transform: rotate(240deg) translateX(165px) rotate(-240deg); }
-  100% { transform: rotate(600deg) translateX(165px) rotate(-600deg); }
+  0% { transform: rotate(240deg) translateX(205px) rotate(-240deg); }
+  100% { transform: rotate(600deg) translateX(205px) rotate(-600deg); }
 }
 
 @keyframes orbit-6 {
-  0% { transform: rotate(300deg) translateX(145px) rotate(-300deg); }
-  100% { transform: rotate(660deg) translateX(145px) rotate(-660deg); }
+  0% { transform: rotate(300deg) translateX(185px) rotate(-300deg); }
+  100% { transform: rotate(660deg) translateX(185px) rotate(-660deg); }
 }
 
 .animate-orbit-1 { animation: orbit-1 8s linear infinite; }
@@ -295,11 +263,28 @@ const scrollToContact = () => {
     0 0 90px rgba(236, 72, 153, 0.2);
 }
 
+/* Custom large size for profile image */
+.w-100 {
+  width: 25rem; /* 400px */
+}
+
+.h-100 {
+  height: 25rem; /* 400px */
+}
+
+.w-120 {
+  width: 30rem; /* 480px */
+}
+
+.h-120 {
+  height: 30rem; /* 480px */
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .profile-container {
-    width: 280px;
-    height: 280px;
+    width: 300px;
+    height: 300px;
   }
 
   .group:hover img {
