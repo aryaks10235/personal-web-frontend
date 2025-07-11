@@ -166,12 +166,12 @@ ${form.nama}`
 
 <template>
   <section class="py-20 bg-gray-900 text-white">
-    <div class="container mx-auto px-6">
+    <div class="container mx-auto px-4 sm:px-6">
       <div class="max-w-6xl mx-auto">
         <!-- Header Section -->
         <div class="text-center mb-12">
           <SectionTitle title="Hubungi Saya" />
-          <p class="text-xl text-gray-300 mb-8">
+          <p class="text-lg sm:text-xl text-gray-300 mb-8">
             Jangan ragu untuk terhubung atau bertanya. Saya siap membantu!
           </p>
         </div>
@@ -179,116 +179,193 @@ ${form.nama}`
         <!-- Contact Form -->
         <div class="max-w-4xl mx-auto">
           <div class="bg-gray-700 rounded-lg shadow-xl overflow-hidden">
-            <div class="bg-gradient-to-r from-blue-600 to-purple-600 p-6">
-              <h3 class="text-2xl font-bold text-white flex items-center">
-                <i class="fas fa-paper-plane mr-3"></i>
+            <div class="bg-gradient-to-r from-blue-600 to-purple-600 p-4 sm:p-6">
+              <h3 class="text-xl sm:text-2xl font-bold text-white flex items-center">
+                <i class="fas fa-paper-plane mr-2 sm:mr-3"></i>
                 Form Kontak
               </h3>
-              <p class="text-blue-100 mt-2">Isi formulir di bawah untuk mengirim pesan</p>
+              <p class="text-blue-100 mt-2 text-sm sm:text-base">Isi formulir di bawah untuk mengirim pesan</p>
             </div>
 
-            <div class="p-8">
+            <div class="p-4 sm:p-8">
               <form @submit.prevent="submitForm" class="space-y-1">
-                <!-- Tabel Form tanpa header -->
-                <div class="overflow-x-auto">
-                  <table class="w-full bg-gray-800 rounded-lg overflow-hidden">
-                    <tbody>
-                      <!-- Row Nama -->
-                      <tr class="border-b border-gray-600 hover:bg-gray-750 transition-colors duration-200">
-                        <td class="px-6 py-6 align-top w-1/3">
-                          <label for="nama" class="block text-lg font-medium text-gray-300">
-                            <i class="fas fa-user mr-3 text-blue-400 text-base"></i>
-                            Nama Lengkap
-                          </label>
-                        </td>
-                        <td class="px-6 py-6">
-                          <input
-                            type="text"
-                            id="nama"
-                            name="name"
-                            v-model="form.nama"
-                            :class="[
-                              'w-full px-4 py-3 bg-gray-600 border rounded-lg text-white placeholder-gray-400',
-                              'focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-300',
-                              errors.nama ? 'border-red-500 focus:ring-red-500' : 'border-gray-500 focus:ring-blue-500'
-                            ]"
-                            placeholder="Contoh: John Doe"
-                            maxlength="100"
-                          />
-                          <div class="flex justify-between mt-1">
-                            <span v-if="errors.nama" class="text-xs text-red-400">{{ errors.nama }}</span>
-                            <span class="text-xs text-gray-500 ml-auto">{{ form.nama.length }}/100</span>
-                          </div>
-                        </td>
-                      </tr>
+                <!-- Mobile: Stack Layout -->
+                <div class="block lg:hidden space-y-6">
+                  <!-- Nama - Mobile -->
+                  <div class="space-y-2">
+                    <label for="nama-mobile" class="block text-base font-medium text-gray-300">
+                      <i class="fas fa-user mr-2 text-blue-400"></i>
+                      Nama Lengkap
+                    </label>
+                    <input
+                      type="text"
+                      id="nama-mobile"
+                      name="name"
+                      v-model="form.nama"
+                      :class="[
+                        'w-full px-4 py-3 bg-gray-600 border rounded-lg text-white placeholder-gray-400',
+                        'focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-300',
+                        errors.nama ? 'border-red-500 focus:ring-red-500' : 'border-gray-500 focus:ring-blue-500'
+                      ]"
+                      placeholder="Contoh: John Doe"
+                      maxlength="100"
+                    />
+                    <div class="flex justify-between">
+                      <span v-if="errors.nama" class="text-xs text-red-400">{{ errors.nama }}</span>
+                      <span class="text-xs text-gray-500 ml-auto">{{ form.nama.length }}/100</span>
+                    </div>
+                  </div>
 
-                      <!-- Row Email -->
-                      <tr class="border-b border-gray-600 hover:bg-gray-750 transition-colors duration-200">
-                        <td class="px-6 py-6 align-top w-1/3">
-                          <label for="email" class="block text-lg font-medium text-gray-300">
-                            <i class="fas fa-envelope mr-3 text-green-400 text-base"></i>
-                            Email Address
-                          </label>
-                        </td>
-                        <td class="px-6 py-6">
-                          <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            v-model="form.email"
-                            :class="[
-                              'w-full px-4 py-3 bg-gray-600 border rounded-lg text-white placeholder-gray-400',
-                              'focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-300',
-                              errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-500 focus:ring-blue-500'
-                            ]"
-                            placeholder="contoh@email.com"
-                          />
-                          <span v-if="errors.email" class="text-xs text-red-400 block mt-1">{{ errors.email }}</span>
-                        </td>
-                      </tr>
+                  <!-- Email - Mobile -->
+                  <div class="space-y-2">
+                    <label for="email-mobile" class="block text-base font-medium text-gray-300">
+                      <i class="fas fa-envelope mr-2 text-green-400"></i>
+                      Email Address
+                    </label>
+                    <input
+                      type="email"
+                      id="email-mobile"
+                      name="email"
+                      v-model="form.email"
+                      :class="[
+                        'w-full px-4 py-3 bg-gray-600 border rounded-lg text-white placeholder-gray-400',
+                        'focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-300',
+                        errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-500 focus:ring-blue-500'
+                      ]"
+                      placeholder="contoh@email.com"
+                    />
+                    <span v-if="errors.email" class="text-xs text-red-400 block">{{ errors.email }}</span>
+                  </div>
 
-                      <!-- Row Pesan -->
-                      <tr class="hover:bg-gray-750 transition-colors duration-200">
-                        <td class="px-6 py-6 align-top w-1/3">
-                          <label for="pesan" class="block text-lg font-medium text-gray-300">
-                            <i class="fas fa-comment-dots mr-3 text-yellow-400 text-base"></i>
-                            Pesan
-                          </label>
-                        </td>
-                        <td class="px-6 py-6">
-                          <textarea
-                            id="pesan"
-                            name="message"
-                            v-model="form.pesan"
-                            rows="6"
-                            :class="[
-                              'w-full px-4 py-3 bg-gray-600 border rounded-lg text-white placeholder-gray-400',
-                              'focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-300',
-                              'resize-none',
-                              errors.pesan ? 'border-red-500 focus:ring-red-500' : 'border-gray-500 focus:ring-blue-500'
-                            ]"
-                            placeholder="Tulis pesan, pertanyaan, atau proposal proyek Anda di sini..."
-                            maxlength="1000"
-                          ></textarea>
-                          <div class="flex justify-between mt-1">
-                            <span v-if="errors.pesan" class="text-xs text-red-400">{{ errors.pesan }}</span>
-                            <span class="text-xs text-gray-500 ml-auto">{{ form.pesan.length }}/1000</span>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <!-- Pesan - Mobile -->
+                  <div class="space-y-2">
+                    <label for="pesan-mobile" class="block text-base font-medium text-gray-300">
+                      <i class="fas fa-comment-dots mr-2 text-yellow-400"></i>
+                      Pesan
+                    </label>
+                    <textarea
+                      id="pesan-mobile"
+                      name="message"
+                      v-model="form.pesan"
+                      rows="5"
+                      :class="[
+                        'w-full px-4 py-3 bg-gray-600 border rounded-lg text-white placeholder-gray-400',
+                        'focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-300',
+                        'resize-none',
+                        errors.pesan ? 'border-red-500 focus:ring-red-500' : 'border-gray-500 focus:ring-blue-500'
+                      ]"
+                      placeholder="Tulis pesan, pertanyaan, atau proposal proyek Anda di sini..."
+                      maxlength="1000"
+                    ></textarea>
+                    <div class="flex justify-between">
+                      <span v-if="errors.pesan" class="text-xs text-red-400">{{ errors.pesan }}</span>
+                      <span class="text-xs text-gray-500 ml-auto">{{ form.pesan.length }}/1000</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Desktop: Table Layout -->
+                <div class="hidden lg:block">
+                  <div class="bg-gray-800 rounded-lg overflow-hidden">
+                    <table class="w-full">
+                      <tbody>
+                        <!-- Row Nama -->
+                        <tr class="border-b border-gray-600 hover:bg-gray-750 transition-colors duration-200">
+                          <td class="px-6 py-6 align-top w-1/3">
+                            <label for="nama" class="block text-lg font-medium text-gray-300">
+                              <i class="fas fa-user mr-3 text-blue-400 text-base"></i>
+                              Nama Lengkap
+                            </label>
+                          </td>
+                          <td class="px-6 py-6">
+                            <input
+                              type="text"
+                              id="nama"
+                              name="name"
+                              v-model="form.nama"
+                              :class="[
+                                'w-full px-4 py-3 bg-gray-600 border rounded-lg text-white placeholder-gray-400',
+                                'focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-300',
+                                errors.nama ? 'border-red-500 focus:ring-red-500' : 'border-gray-500 focus:ring-blue-500'
+                              ]"
+                              placeholder="Contoh: John Doe"
+                              maxlength="100"
+                            />
+                            <div class="flex justify-between mt-1">
+                              <span v-if="errors.nama" class="text-xs text-red-400">{{ errors.nama }}</span>
+                              <span class="text-xs text-gray-500 ml-auto">{{ form.nama.length }}/100</span>
+                            </div>
+                          </td>
+                        </tr>
+
+                        <!-- Row Email -->
+                        <tr class="border-b border-gray-600 hover:bg-gray-750 transition-colors duration-200">
+                          <td class="px-6 py-6 align-top w-1/3">
+                            <label for="email" class="block text-lg font-medium text-gray-300">
+                              <i class="fas fa-envelope mr-3 text-green-400 text-base"></i>
+                              Email Address
+                            </label>
+                          </td>
+                          <td class="px-6 py-6">
+                            <input
+                              type="email"
+                              id="email"
+                              name="email"
+                              v-model="form.email"
+                              :class="[
+                                'w-full px-4 py-3 bg-gray-600 border rounded-lg text-white placeholder-gray-400',
+                                'focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-300',
+                                errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-500 focus:ring-blue-500'
+                              ]"
+                              placeholder="contoh@email.com"
+                            />
+                            <span v-if="errors.email" class="text-xs text-red-400 block mt-1">{{ errors.email }}</span>
+                          </td>
+                        </tr>
+
+                        <!-- Row Pesan -->
+                        <tr class="hover:bg-gray-750 transition-colors duration-200">
+                          <td class="px-6 py-6 align-top w-1/3">
+                            <label for="pesan" class="block text-lg font-medium text-gray-300">
+                              <i class="fas fa-comment-dots mr-3 text-yellow-400 text-base"></i>
+                              Pesan
+                            </label>
+                          </td>
+                          <td class="px-6 py-6">
+                            <textarea
+                              id="pesan"
+                              name="message"
+                              v-model="form.pesan"
+                              rows="6"
+                              :class="[
+                                'w-full px-4 py-3 bg-gray-600 border rounded-lg text-white placeholder-gray-400',
+                                'focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-300',
+                                'resize-none',
+                                errors.pesan ? 'border-red-500 focus:ring-red-500' : 'border-gray-500 focus:ring-blue-500'
+                              ]"
+                              placeholder="Tulis pesan, pertanyaan, atau proposal proyek Anda di sini..."
+                              maxlength="1000"
+                            ></textarea>
+                            <div class="flex justify-between mt-1">
+                              <span v-if="errors.pesan" class="text-xs text-red-400">{{ errors.pesan }}</span>
+                              <span class="text-xs text-gray-500 ml-auto">{{ form.pesan.length }}/1000</span>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
 
                 <!-- Submit Button -->
-                <div class="pt-8">
+                <div class="pt-6 sm:pt-8">
                   <button
                     type="submit"
                     :disabled="isSubmitting"
-                    class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold py-4 px-6 rounded-lg
+                    class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold py-3 sm:py-4 px-6 rounded-lg
                            hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500
                            focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-300 transform
-                           hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
+                           hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl text-sm sm:text-base"
                   >
                     <i v-if="!isSubmitting" class="fas fa-paper-plane mr-2"></i>
                     <i v-else class="fas fa-spinner fa-spin mr-2"></i>
@@ -310,55 +387,55 @@ ${form.nama}`
         </div>
 
         <!-- Social Media -->
-        <div class="mt-16 bg-gray-700 p-8 rounded-lg shadow-lg max-w-4xl mx-auto">
-          <h4 class="text-2xl font-semibold text-white mb-6 text-center flex items-center justify-center">
-            <i class="fas fa-share-alt mr-3 text-purple-400"></i>
+        <div class="mt-16 bg-gray-700 p-6 sm:p-8 rounded-lg shadow-lg max-w-4xl mx-auto">
+          <h4 class="text-xl sm:text-2xl font-semibold text-white mb-6 text-center flex items-center justify-center">
+            <i class="fas fa-share-alt mr-2 sm:mr-3 text-purple-400"></i>
             Terhubung dengan Saya
           </h4>
-          <div class="flex justify-center space-x-8">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8">
             <!-- GitHub -->
             <a href="https://github.com/aryaks10235" target="_blank" rel="noopener noreferrer"
                class="group flex flex-col items-center space-y-2 text-gray-400 hover:text-purple-400 transition-all duration-300 transform hover:scale-110">
-              <div class="bg-gray-600 p-4 rounded-full group-hover:bg-purple-600 transition-all duration-300 shadow-lg group-hover:shadow-purple-500/25">
-                <i class="fab fa-github text-3xl"></i>
+              <div class="bg-gray-600 p-3 sm:p-4 rounded-full group-hover:bg-purple-600 transition-all duration-300 shadow-lg group-hover:shadow-purple-500/25">
+                <i class="fab fa-github text-2xl sm:text-3xl"></i>
               </div>
-              <span class="text-sm font-medium">GitHub</span>
-              <span class="text-xs text-gray-500 group-hover:text-purple-300">@aryaks10235</span>
+              <span class="text-xs sm:text-sm font-medium text-center">GitHub</span>
+              <span class="text-xs text-gray-500 group-hover:text-purple-300 text-center">@aryaks10235</span>
             </a>
 
             <!-- LinkedIn -->
             <a href="https://linkedin.com/in/arya-kusuma-student" target="_blank" rel="noopener noreferrer"
                class="group flex flex-col items-center space-y-2 text-gray-400 hover:text-blue-400 transition-all duration-300 transform hover:scale-110">
-              <div class="bg-gray-600 p-4 rounded-full group-hover:bg-blue-600 transition-all duration-300 shadow-lg group-hover:shadow-blue-500/25">
-                <i class="fab fa-linkedin text-3xl"></i>
+              <div class="bg-gray-600 p-3 sm:p-4 rounded-full group-hover:bg-blue-600 transition-all duration-300 shadow-lg group-hover:shadow-blue-500/25">
+                <i class="fab fa-linkedin text-2xl sm:text-3xl"></i>
               </div>
-              <span class="text-sm font-medium">LinkedIn</span>
-              <span class="text-xs text-gray-500 group-hover:text-blue-300"></span>
+              <span class="text-xs sm:text-sm font-medium text-center">LinkedIn</span>
+              <span class="text-xs text-gray-500 group-hover:text-blue-300 text-center">Profile</span>
             </a>
 
             <!-- Instagram -->
             <a href="https://instagram.com/__aryaks" target="_blank" rel="noopener noreferrer"
                class="group flex flex-col items-center space-y-2 text-gray-400 hover:text-pink-400 transition-all duration-300 transform hover:scale-110">
-              <div class="bg-gray-600 p-4 rounded-full group-hover:bg-gradient-to-br group-hover:from-purple-600 group-hover:to-pink-600 transition-all duration-300 shadow-lg group-hover:shadow-pink-500/25">
-                <i class="fab fa-instagram text-3xl"></i>
+              <div class="bg-gray-600 p-3 sm:p-4 rounded-full group-hover:bg-gradient-to-br group-hover:from-purple-600 group-hover:to-pink-600 transition-all duration-300 shadow-lg group-hover:shadow-pink-500/25">
+                <i class="fab fa-instagram text-2xl sm:text-3xl"></i>
               </div>
-              <span class="text-sm font-medium">Instagram</span>
-              <span class="text-xs text-gray-500 group-hover:text-pink-300">@__aryaks</span>
+              <span class="text-xs sm:text-sm font-medium text-center">Instagram</span>
+              <span class="text-xs text-gray-500 group-hover:text-pink-300 text-center">@__aryaks</span>
             </a>
 
             <!-- Email Direct -->
             <a href="mailto:aryakusuma10235@students.amikom.ac.id"
                class="group flex flex-col items-center space-y-2 text-gray-400 hover:text-green-400 transition-all duration-300 transform hover:scale-110">
-              <div class="bg-gray-600 p-4 rounded-full group-hover:bg-green-600 transition-all duration-300 shadow-lg group-hover:shadow-green-500/25">
-                <i class="fas fa-envelope text-3xl"></i>
+              <div class="bg-gray-600 p-3 sm:p-4 rounded-full group-hover:bg-green-600 transition-all duration-300 shadow-lg group-hover:shadow-green-500/25">
+                <i class="fas fa-envelope text-2xl sm:text-3xl"></i>
               </div>
-              <span class="text-sm font-medium">Email</span>
-              <span class="text-xs text-gray-500 group-hover:text-green-300">My Email</span>
+              <span class="text-xs sm:text-sm font-medium text-center">Email</span>
+              <span class="text-xs text-gray-500 group-hover:text-green-300 text-center">My Email</span>
             </a>
           </div>
 
           <!-- Social Media Description -->
-          <div class="mt-8 text-center">
+          <div class="mt-6 sm:mt-8 text-center">
             <p class="text-gray-400 text-sm">
               <i class="fas fa-heart text-red-400 mr-1"></i>
               Mari terhubung dan berbagi pengalaman di dunia teknologi!
@@ -368,7 +445,7 @@ ${form.nama}`
 
         <!-- Footer Copyright -->
         <div class="text-center mt-12 pt-8 border-t border-gray-600">
-          <p class="text-gray-500">
+          <p class="text-gray-500 text-sm">
             &copy; {{ new Date().getFullYear() }} Arya Kusuma. Dibuat dengan
             <i class="fab fa-vuejs text-green-400 mx-1"></i>Vue.js
           </p>
@@ -402,17 +479,6 @@ button:hover:not(:disabled) {
 /* Character counter */
 .text-xs {
   font-size: 0.75rem;
-}
-
-/* Responsive table */
-@media (max-width: 640px) {
-  .overflow-x-auto {
-    overflow-x: auto;
-  }
-
-  table {
-    min-width: 500px;
-  }
 }
 
 /* Social media hover effects */
@@ -461,5 +527,13 @@ button:hover:not(:disabled) {
 
 .group-hover\:shadow-green-500\/25:hover {
   box-shadow: 0 10px 25px rgba(34, 197, 94, 0.25);
+}
+
+/* Mobile responsive fixes */
+@media (max-width: 1023px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }
 </style>
