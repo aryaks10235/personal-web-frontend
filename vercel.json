@@ -4,17 +4,12 @@
   "outputDirectory": "frontend/dist",
   "installCommand": "cd frontend && npm install",
   "framework": "vite",
-  "routes": [
+  "rewrites": [
     {
-      "src": "/.*",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
-  "functions": {
-    "frontend/src/**": {
-      "includeFiles": "frontend/dist/**"
-    }
-  },
   "headers": [
     {
       "source": "/(.*)",
