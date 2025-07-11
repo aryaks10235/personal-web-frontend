@@ -1,23 +1,46 @@
 <script setup>
 defineOptions({ name: 'EducationSection' });
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
-// import SectionTitle from './SectionTitle.vue'; // Aktifkan jika Anda punya
+import { apiService } from '@/services/api.js';
+import SectionTitle from './SectionTitle.vue';
+
 const educationHistory = ref([]);
-const API_URL = import.meta.env.PROD ? '/api/education' :
-'http://localhost:3000/api/education';
+const loading = ref(true);
+const error = ref(null);
+
 onMounted(async () => {
-try {
-educationHistory.value = (await axios.get(API_URL)).data;   }
-catch (error) {
-console.error('Gagal mengambil data pendidikan:', error);   }
+  try {
+    loading.value = true;
+    educationHistory.value = await apiService.getEducation();
+  } catch (err) {
+    console.error('Gagal mengambil data pendidikan:', err);
+    error.value = 'Gagal memuat data pendidikan. Silakan coba lagi nanti.';
+  } finally {
+    loading.value = false;
+  }
 });
 </script>
 <template>
   <section class="py-20 bg-gray-900 text-white">
     <div class="container mx-auto px-6">
       <SectionTitle title="Riwayat Pendidikan" />
-      <div class="relative">
+
+      <!-- Loading State -->
+      <div v-if="loading" class="flex justify-center items-center py-12">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+        <span class="ml-3 text-gray-300">Memuat data pendidikan...</span>
+      </div>
+
+      <!-- Error State -->
+      <div v-else-if="error" class="text-center py-12">
+        <div class="bg-red-900/20 border border-red-500 rounded-lg p-6 max-w-md mx-auto">
+          <i class="fas fa-exclamation-triangle text-red-400 text-2xl mb-3"></i>
+          <p class="text-red-300">{{ error }}</p>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div v-else-if="educationHistory.length > 0" class="relative">
         <div class="absolute h-full border-r-2 border-gray-600" style="left: 50%;"></div>
         <div v-for="(edu, index) in educationHistory" :key="edu.id"
              class="mb-8 flex justify-between items-center w-full">
@@ -52,6 +75,12 @@ console.error('Gagal mengambil data pendidikan:', error);   }
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- Empty State -->
+      <div v-else class="text-center py-12">
+        <i class="fas fa-graduation-cap text-gray-500 text-4xl mb-4"></i>
+        <p class="text-gray-400">Tidak ada data pendidikan yang tersedia.</p>
       </div>
     </div>
   </section>

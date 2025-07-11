@@ -6,10 +6,17 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "vercel-build": "vite build && echo 'Frontend build completed'",
+    "build:prod": "vite build --mode production",
+    "build:dev": "vite build --mode development",
+    "vercel-build": "npm run build:prod",
     "preview": "vite preview",
     "lint": "eslint . --fix",
-    "format": "prettier --write src/"
+    "lint:check": "eslint .",
+    "format": "prettier --write src/",
+    "format:check": "prettier --check src/",
+    "type-check": "vue-tsc --noEmit",
+    "clean": "rm -rf dist node_modules/.vite",
+    "analyze": "npx vite-bundle-analyzer"
   },
   "dependencies": {
     "axios": "^1.10.0",
@@ -27,6 +34,7 @@
     "postcss": "^8.5.6",
     "prettier": "3.5.3",
     "tailwindcss": "^3.4.17",
+    "terser": "^5.43.1",
     "vite": "^7.0.2",
     "vite-plugin-vue-devtools": "^7.7.7"
   }

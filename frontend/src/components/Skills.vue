@@ -1,17 +1,23 @@
 <script setup>
 defineOptions({ name: 'SkillsSection' });
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
-// import SectionTitle from './SectionTitle.vue'; // Aktifkan jika Anda punya
+import { apiService } from '@/services/api.js';
+import SectionTitle from './SectionTitle.vue';
+
 const skills = ref([]);
-const API_URL = import.meta.env.PROD ? '/api/skills' :
-'http://localhost:3000/api/skills';
+const loading = ref(true);
+const error = ref(null);
+
 onMounted(async () => {
-try {
-skills.value = (await axios.get(API_URL)).data;
-} catch (error) {
-console.error('Gagal mengambil data skill:', error);
-}
+  try {
+    loading.value = true;
+    skills.value = await apiService.getSkills();
+  } catch (err) {
+    console.error('Gagal mengambil data skill:', err);
+    error.value = 'Gagal memuat data keahlian. Silakan coba lagi nanti.';
+  } finally {
+    loading.value = false;
+  }
 });
 </script>
 
@@ -19,7 +25,23 @@ console.error('Gagal mengambil data skill:', error);
   <section class="py-20 bg-gray-900 text-white">
     <div class="container mx-auto px-6">
       <SectionTitle title="Keahlian & Teknologi" />
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+      <!-- Loading State -->
+      <div v-if="loading" class="flex justify-center items-center py-12">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+        <span class="ml-3 text-gray-300">Memuat data keahlian...</span>
+      </div>
+
+      <!-- Error State -->
+      <div v-else-if="error" class="text-center py-12">
+        <div class="bg-red-900/20 border border-red-500 rounded-lg p-6 max-w-md mx-auto">
+          <i class="fas fa-exclamation-triangle text-red-400 text-2xl mb-3"></i>
+          <p class="text-red-300">{{ error }}</p>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div v-else-if="skills.length > 0" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         <div v-for="skill in skills" :key="skill.name"
              class="group relative bg-transparent border-2 border-gray-600 p-6 rounded-xl text-center
                     hover:border-transparent transition-all duration-500 transform hover:scale-105
@@ -52,6 +74,12 @@ console.error('Gagal mengambil data skill:', error);
             <div class="absolute bottom-2 right-2 w-1 h-1 bg-white rounded-full animate-float-1"></div>
           </div>
         </div>
+      </div>
+
+      <!-- Empty State -->
+      <div v-else class="text-center py-12">
+        <i class="fas fa-code text-gray-500 text-4xl mb-4"></i>
+        <p class="text-gray-400">Tidak ada data keahlian yang tersedia.</p>
       </div>
     </div>
   </section>

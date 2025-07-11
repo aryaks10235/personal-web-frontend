@@ -31,6 +31,41 @@ export default defineConfig({
   base: '/',
   build: {
     outDir: 'dist',
-    assetsDir: 'assets'
+    assetsDir: 'assets',
+    sourcemap: false,
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true
+      }
+    },
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['vue', 'vue-router'],
+          axios: ['axios']
+        }
+      }
+    },
+    chunkSizeWarningLimit: 1000
+  },
+  server: {
+    port: 3001,
+    host: true,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        secure: false
+      }
+    }
+  },
+  preview: {
+    port: 3001,
+    host: true
+  },
+  optimizeDeps: {
+    include: ['vue', 'vue-router', 'axios']
   }
 })
