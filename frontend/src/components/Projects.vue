@@ -1,21 +1,21 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import SectionTitle from './SectionTitle.vue';
+import { ref, onMounted, defineOptions } from 'vue';
+import axios from 'axios';
+// import SectionTitle from './SectionTitle.vue'; // Aktifkan jika Anda punya
 
-// Definisikan nama komponen untuk menghindari warning
 defineOptions({
   name: 'ProjectsSection'
 });
 
 const projects = ref([]);
-
+const API_URL = import.meta.env.PROD ? '/api/projects' :
+'http://localhost:3000/api/projects';
 onMounted(async () => {
-  try {
-    const res = await fetch('http://localhost:3000/api/projects');
-    projects.value = await res.json();
-  } catch (e) {
-    console.error('Failed to fetch projects data', e);
-  }
+try {
+projects.value = (await axios.get(API_URL)).data;
+} catch (error) {
+console.error('Gagal mengambil data proyek:', error);
+}
 });
 </script>
 

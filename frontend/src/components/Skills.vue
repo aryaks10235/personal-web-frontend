@@ -1,22 +1,17 @@
 <script setup>
+defineOptions({ name: 'SkillsSection' });
 import { ref, onMounted } from 'vue';
-import SectionTitle from './SectionTitle.vue';
-
-// Definisikan nama komponen untuk menghindari warning
-defineOptions({
-  name: 'SkillsSection'
-});
-
-// Data keahlian dengan teknologi yang diperluas (tanpa level)
+import axios from 'axios';
+// import SectionTitle from './SectionTitle.vue'; // Aktifkan jika Anda punya
 const skills = ref([]);
-
+const API_URL = import.meta.env.PROD ? '/api/skills' :
+'http://localhost:3000/api/skills';
 onMounted(async () => {
-  try {
-    const res = await fetch('http://localhost:3000/api/skills');
-    skills.value = await res.json();
-  } catch (e) {
-    console.error('Failed to fetch skills data', e);
-  }
+try {
+skills.value = (await axios.get(API_URL)).data;
+} catch (error) {
+console.error('Gagal mengambil data skill:', error);
+}
 });
 </script>
 

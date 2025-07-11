@@ -1,21 +1,16 @@
 <script setup>
+defineOptions({ name: 'EducationSection' });
 import { ref, onMounted } from 'vue';
-import SectionTitle from './SectionTitle.vue';
-
-// Definisikan nama komponen untuk menghindari warning
-defineOptions({
-  name: 'EducationSection'
-});
-
+import axios from 'axios';
+// import SectionTitle from './SectionTitle.vue'; // Aktifkan jika Anda punya
 const educationHistory = ref([]);
-
+const API_URL = import.meta.env.PROD ? '/api/education' :
+'http://localhost:3000/api/education';
 onMounted(async () => {
-  try {
-    const res = await fetch('http://localhost:3000/api/education');
-    educationHistory.value = await res.json();
-  } catch (e) {
-    console.error('Failed to fetch education data', e);
-  }
+try {
+educationHistory.value = (await axios.get(API_URL)).data;   }
+catch (error) {
+console.error('Gagal mengambil data pendidikan:', error);   }
 });
 </script>
 <template>
