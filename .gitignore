@@ -55,3 +55,4 @@ Thumbs.db
 .cache/
 .parcel-cache/
 .eslintcache
+.vercel
